@@ -123,19 +123,23 @@
               <p>留下你的屆數、名字與心得，留言會顯示給所有人看到。</p>
             </div>
 
+            <div class="comments-list" data-comments-list>
+              <p class="comments-empty">留言載入中...</p>
+            </div>
+
             <form class="comment-form" data-comment-form>
               <div class="form-grid">
                 <label>
-                  <span>屆數</span>
+                  <span>屆數 *</span>
                   <input name="generation" type="text" autocomplete="organization-title" maxlength="16" required />
                 </label>
                 <label>
-                  <span>名字</span>
+                  <span>名字 *</span>
                   <input name="name" type="text" autocomplete="name" maxlength="24" required />
                 </label>
               </div>
               <label>
-                <span>留言</span>
+                <span>留言 *</span>
                 <textarea name="message" rows="4" maxlength="500" required></textarea>
               </label>
               <div class="form-grid form-grid--submit">
@@ -148,10 +152,6 @@
               </div>
               <p class="form-status" data-comment-status role="status" aria-live="polite"></p>
             </form>
-
-            <div class="comments-list" data-comments-list>
-              <p class="comments-empty">留言載入中...</p>
-            </div>
           </section>
         </section>
       </div>

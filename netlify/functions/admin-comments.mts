@@ -11,6 +11,7 @@ type CommentRecord = {
 };
 
 const STORE_NAME = "course-comments";
+const ADMIN_PASSWORD_HASH = "7924073a9d829ad930791e059dcfd17068daa83b811c708d627f0bfaacb7bdd3";
 const LESSONS = [
   { id: "lesson-1", label: "第 1 堂 【奠定基石】基礎三要素" },
   { id: "lesson-2", label: "第 2 堂 【穿梭黑白鍵】按鍵與音階流暢度" },
@@ -26,9 +27,6 @@ declare const Netlify: {
     deploy?: {
       context?: string;
     };
-  };
-  env: {
-    get(key: string): string | undefined;
   };
 };
 
@@ -54,10 +52,14 @@ function cleanText(value: unknown, limit: number) {
   return String(value ?? "").trim().slice(0, limit);
 }
 
-function isAuthorized(request: Request) {
-  const configuredPassword = Netlify.env.get("ADMIN_PASSWORD");
+async function hashText(value: string) {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function isAuthorized(request: Request) {
   const submittedPassword = request.headers.get("x-admin-password") ?? "";
-  return Boolean(configuredPassword && submittedPassword && submittedPassword === configuredPassword);
+  return Boolean(submittedPassword && (await hashText(submittedPassword)) === ADMIN_PASSWORD_HASH);
 }
 
 async function getComments(lesson: string) {
@@ -78,7 +80,7 @@ async function getAllComments() {
 }
 
 export default async (request: Request, _context: Context) => {
-  if (!isAuthorized(request)) {
+  if (!(await isAuthorized(request))) {
     return jsonResponse({ message: "管理密碼不正確。" }, { status: 401 });
   }
 

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>C.C.樂團留言管理</title>
+    <meta name="robots" content="noindex" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="admin-page">
+      <a class="back-link" href="index.html">回首頁</a>
+
+      <section class="admin-shell" aria-labelledby="admin-title">
+        <p class="article-kicker">Comment Admin</p>
+        <h1 id="admin-title">留言管理</h1>
+        <p class="admin-intro">輸入管理密碼後，可以查看六堂課所有留言並刪除不適合的內容。</p>
+
+        <form class="admin-login" data-admin-login>
+          <label>
+            <span>管理密碼</span>
+            <input name="password" type="password" autocomplete="current-password" required />
+          </label>
+          <button type="submit">進入管理</button>
+        </form>
+
+        <p class="form-status" data-admin-status role="status" aria-live="polite"></p>
+        <div class="admin-comments" data-admin-comments hidden></div>
+      </section>
+    </main>
+    <script src="admin.js"></script>
+  </body>
+</html>

@@ -449,6 +449,18 @@ h1 {
   box-shadow: 0 12px 28px rgba(36, 32, 27, 0.1);
 }
 
+.article-photo {
+  margin: 30px 0 0;
+}
+
+.article-photo img {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 18px 40px rgba(69, 53, 28, 0.14);
+}
+
 @media (max-width: 860px) {
   main {
     width: min(100% - 24px, 640px);

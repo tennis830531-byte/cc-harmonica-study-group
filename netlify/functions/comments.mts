@@ -12,6 +12,8 @@ type CommentRecord = {
 
 const LESSON_IDS = new Set(["lesson-1", "lesson-2", "lesson-3", "lesson-4", "lesson-5", "lesson-6"]);
 const STORE_NAME = "course-comments";
+const CAPTCHA_STORE_NAME = "comment-captchas";
+const CAPTCHA_MAX_AGE_MS = 10 * 60 * 1000;
 
 declare const Netlify: {
   context?: {
@@ -27,6 +29,14 @@ function getCommentStore() {
   }
 
   return getDeployStore(STORE_NAME);
+}
+
+function getCaptchaStore() {
+  if (Netlify.context?.deploy.context === "production") {
+    return getStore(CAPTCHA_STORE_NAME, { consistency: "strong" });
+  }
+
+  return getDeployStore(CAPTCHA_STORE_NAME);
 }
 
 function jsonResponse(body: unknown, init: ResponseInit = {}) {
@@ -53,6 +63,30 @@ async function getComments(lesson: string) {
   return Array.isArray(comments) ? comments : [];
 }
 
+async function verifyCaptcha(token: string, answer: string) {
+  if (!token || !answer) return false;
+
+  const store = getCaptchaStore();
+  const challenge = (await store.get(token, { type: "json" })) as
+    | { code?: string; createdAt?: number }
+    | null;
+
+  if (!challenge?.code || !challenge?.createdAt) return false;
+
+  const expired = Date.now() - challenge.createdAt > CAPTCHA_MAX_AGE_MS;
+  if (expired) {
+    await store.delete(token);
+    return false;
+  }
+
+  const isMatch = challenge.code.toUpperCase() === answer.toUpperCase();
+  if (isMatch) {
+    await store.delete(token);
+  }
+
+  return isMatch;
+}
+
 export default async (request: Request, _context: Context) => {
   const url = new URL(request.url);
   const lesson = url.searchParams.get("lesson") ?? "";
@@ -76,6 +110,7 @@ export default async (request: Request, _context: Context) => {
   const name = cleanText(body?.name, 24);
   const message = cleanText(body?.message, 500);
   const captcha = cleanText(body?.captcha, 4);
+  const captchaToken = cleanText(body?.captchaToken, 80);
   const website = cleanText(body?.website, 200);
 
   if (website) {
@@ -90,7 +125,7 @@ export default async (request: Request, _context: Context) => {
     return jsonResponse({ message: "請填寫屆數、名字與留言。" }, { status: 400 });
   }
 
-  if (captcha !== "12") {
+  if (!(await verifyCaptcha(captchaToken, captcha))) {
     return jsonResponse({ message: "驗證碼不正確。" }, { status: 400 });
   }
 

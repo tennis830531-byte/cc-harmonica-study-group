@@ -4,6 +4,9 @@ const courseModalTitle = document.querySelector("#course-modal-title");
 const commentForm = document.querySelector("[data-comment-form]");
 const commentStatus = document.querySelector("[data-comment-status]");
 const commentsList = document.querySelector("[data-comments-list]");
+const captchaCode = document.querySelector("[data-captcha-code]");
+const captchaToken = document.querySelector("[data-captcha-token]");
+const captchaRefresh = document.querySelector("[data-captcha-refresh]");
 const openButton = document.querySelector("[data-modal-open]");
 const closeButtons = document.querySelectorAll("[data-modal-close]");
 const courseCards = document.querySelectorAll("[data-course-open]");
@@ -90,6 +93,22 @@ async function loadComments(lesson) {
   }
 }
 
+async function loadCaptcha() {
+  if (!captchaCode || !captchaToken) return;
+  captchaCode.textContent = "載入中";
+  captchaToken.value = "";
+
+  try {
+    const response = await fetch("/api/captcha");
+    if (!response.ok) throw new Error("captcha unavailable");
+    const data = await response.json();
+    captchaCode.textContent = data.code ?? "----";
+    captchaToken.value = data.token ?? "";
+  } catch {
+    captchaCode.textContent = "----";
+  }
+}
+
 courseCards.forEach((card) => {
   card.addEventListener("click", (event) => {
     event.preventDefault();
@@ -100,7 +119,14 @@ courseCards.forEach((card) => {
     commentForm?.reset();
     openModal(courseModal);
     loadComments(activeLesson);
+    loadCaptcha();
   });
+});
+
+captchaRefresh?.addEventListener("click", () => {
+  const captchaInput = commentForm?.elements.captcha;
+  if (captchaInput) captchaInput.value = "";
+  loadCaptcha();
 });
 
 commentForm?.addEventListener("submit", async (event) => {
@@ -112,6 +138,7 @@ commentForm?.addEventListener("submit", async (event) => {
     name: String(formData.get("name") ?? "").trim(),
     message: String(formData.get("message") ?? "").trim(),
     captcha: String(formData.get("captcha") ?? "").trim(),
+    captchaToken: String(formData.get("captchaToken") ?? "").trim(),
     website: String(formData.get("website") ?? "").trim(),
   };
 
@@ -132,8 +159,10 @@ commentForm?.addEventListener("submit", async (event) => {
     commentForm.reset();
     setCommentStatus("留言已送出！", "success");
     renderComments(Array.isArray(data.comments) ? data.comments : []);
+    loadCaptcha();
   } catch (error) {
     setCommentStatus(error.message || "留言板會在 Netlify 網址上啟用。", "error");
+    loadCaptcha();
   }
 });
 

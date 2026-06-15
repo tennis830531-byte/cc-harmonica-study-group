@@ -494,6 +494,36 @@ h1 {
   cursor: pointer;
 }
 
+.comment-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.comment-actions button {
+  flex: 1 1 130px;
+}
+
+.captcha-code {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  border: 1px solid rgba(174, 135, 68, 0.42);
+  border-radius: 6px;
+  padding: 3px 9px;
+  color: var(--ink);
+  background: rgba(174, 135, 68, 0.12);
+  font-family: Arial, "PingFang TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.14em;
+}
+
+.comment-form .captcha-refresh {
+  border: 1px solid var(--line);
+  color: #594c37;
+  background: #fffdf7;
+}
+
 .comment-form button:hover,
 .comment-form button:focus-visible {
   background: var(--gold);

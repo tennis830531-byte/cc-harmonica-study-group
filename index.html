@@ -144,11 +144,15 @@
               </label>
               <div class="form-grid form-grid--submit">
                 <label>
-                  <span>驗證碼：7 + 5 = ?</span>
-                  <input name="captcha" type="text" inputmode="numeric" autocomplete="off" maxlength="4" required />
+                  <span>驗證碼：<strong class="captcha-code" data-captcha-code>載入中</strong></span>
+                  <input name="captcha" type="text" inputmode="text" autocomplete="off" maxlength="4" required />
                 </label>
+                <input name="captchaToken" type="hidden" data-captcha-token />
                 <input class="form-honey" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
-                <button type="submit">送出留言</button>
+                <div class="comment-actions">
+                  <button class="captcha-refresh" type="button" data-captcha-refresh>換一組</button>
+                  <button type="submit">送出留言</button>
+                </div>
               </div>
               <p class="form-status" data-comment-status role="status" aria-live="polite"></p>
             </form>

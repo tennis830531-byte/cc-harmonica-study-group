@@ -127,9 +127,9 @@ main {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(300px, 440px);
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 460px);
   align-items: start;
-  gap: 26px;
+  gap: 12px;
   padding: 18px 0 28px;
 }
 
@@ -198,15 +198,15 @@ h1 {
 }
 
 .hero__image {
-  margin: 68px 0 0;
-  justify-self: end;
+  margin: 0;
+  justify-self: start;
 }
 
 .hero__image img {
   display: block;
   width: auto;
   max-width: 100%;
-  max-height: min(52vh, 420px);
+  max-height: min(68vh, 560px);
   object-fit: contain;
   border-radius: 8px;
   box-shadow: var(--shadow);
@@ -525,6 +525,10 @@ h1 {
 }
 
 @media (min-width: 861px) and (max-width: 1060px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+  }
+
   .course-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

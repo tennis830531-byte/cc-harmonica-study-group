@@ -174,8 +174,12 @@ h1 {
   max-width: 520px;
   margin: 16px 0 0;
   color: var(--muted);
-  font-size: clamp(1.08rem, 2.2vw, 1.45rem);
-  line-height: 1.65;
+  font-family:
+    "Hannotate TC", "YuKyokasho", "DFKai-SB", "STKaiti", "KaiTi",
+    cursive;
+  font-size: clamp(1.22rem, 2.5vw, 1.72rem);
+  font-weight: 500;
+  line-height: 1.75;
 }
 
 .meta {

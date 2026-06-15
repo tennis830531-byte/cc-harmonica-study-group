@@ -7,6 +7,7 @@ const commentsList = document.querySelector("[data-comments-list]");
 const captchaCode = document.querySelector("[data-captcha-code]");
 const captchaToken = document.querySelector("[data-captcha-token]");
 const captchaRefresh = document.querySelector("[data-captcha-refresh]");
+const calendarButtons = document.querySelectorAll(".calendar-button");
 const openButton = document.querySelector("[data-modal-open]");
 const closeButtons = document.querySelectorAll("[data-modal-close]");
 const courseCards = document.querySelectorAll("[data-course-open]");
@@ -148,6 +149,22 @@ courseCards.forEach((card) => {
     openModal(courseModal);
     loadComments(activeLesson);
     loadCaptcha();
+  });
+
+  card.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    card.click();
+  });
+});
+
+calendarButtons.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
+
+  button.addEventListener("keydown", (event) => {
+    event.stopPropagation();
   });
 });
 

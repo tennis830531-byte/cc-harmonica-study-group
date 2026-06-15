@@ -238,6 +238,7 @@ h1 {
   background: rgba(255, 253, 247, 0.88);
   text-decoration: none;
   box-shadow: 0 10px 24px rgba(69, 53, 28, 0.08);
+  cursor: pointer;
   transition:
     transform 180ms ease,
     border-color 180ms ease,
@@ -295,6 +296,34 @@ h1 {
 
 .course--foundation {
   --accent: var(--gold);
+  padding-bottom: 78px;
+}
+
+.calendar-button {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(174, 135, 68, 0.45);
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: #fffdf7;
+  background: #594c37;
+  font-size: 0.94rem;
+  font-weight: 900;
+  text-decoration: none;
+  box-shadow: 0 10px 22px rgba(69, 53, 28, 0.13);
+  cursor: pointer;
+}
+
+.calendar-button:hover,
+.calendar-button:focus-visible {
+  background: var(--gold);
+  outline: 2px solid rgba(174, 135, 68, 0.35);
+  outline-offset: 3px;
 }
 
 .course--scale {

@@ -19,7 +19,7 @@ type ReplyRecord = {
 };
 
 const STORE_NAME = "course-comments";
-const ADMIN_PASSWORD_HASH = "7924073a9d829ad930791e059dcfd17068daa83b811c708d627f0bfaacb7bdd3";
+const ADMIN_PASSWORD_HASH = "92c6552d87f3e69c960bb9af69854f358c41fa94e4cdcc8c5e9a2125f6354bd1";
 const LESSONS = [
   { id: "lesson-1", label: "第 1 堂 【奠定基石】基礎三要素" },
   { id: "lesson-2", label: "第 2 堂 【穿梭黑白鍵】按鍵與音階流暢度" },

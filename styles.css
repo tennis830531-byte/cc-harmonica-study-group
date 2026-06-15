@@ -339,12 +339,18 @@ h1 {
 
 .modal__panel {
   width: min(680px, 100%);
+  max-height: min(88vh, 900px);
+  overflow: auto;
   position: relative;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: clamp(28px, 5vw, 46px);
   background: #fffdf7;
   box-shadow: 0 28px 80px rgba(36, 32, 27, 0.28);
+}
+
+.modal__panel--course {
+  width: min(820px, 100%);
 }
 
 .modal__panel h2 {
@@ -372,6 +378,164 @@ h1 {
   font-size: clamp(1.08rem, 2.2vw, 1.28rem);
   font-weight: 800;
   line-height: 1.85;
+}
+
+.video-placeholder {
+  display: grid;
+  place-items: center;
+  min-height: 230px;
+  margin-top: 22px;
+  border: 1px dashed rgba(174, 135, 68, 0.55);
+  border-radius: 8px;
+  padding: 24px;
+  background:
+    linear-gradient(135deg, rgba(174, 135, 68, 0.1), rgba(84, 121, 100, 0.08)),
+    var(--paper);
+  text-align: center;
+}
+
+.video-placeholder__label {
+  margin: 0;
+  color: var(--gold);
+  font-family: Arial, "PingFang TC", sans-serif;
+  font-size: 0.84rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.modal__panel .course-modal-message {
+  margin-top: 8px;
+  color: var(--ink);
+  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+}
+
+.comment-board {
+  margin-top: 24px;
+  border-top: 1px solid rgba(216, 199, 163, 0.8);
+  padding-top: 22px;
+}
+
+.comment-board__header {
+  display: grid;
+  gap: 6px;
+}
+
+.comment-board h3 {
+  margin: 0;
+  font-size: clamp(1.32rem, 2.5vw, 1.7rem);
+}
+
+.comment-board__header p,
+.form-status,
+.comments-empty {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.comment-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.form-grid--submit {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+}
+
+.comment-form label {
+  display: grid;
+  gap: 7px;
+  color: #594c37;
+  font-weight: 900;
+}
+
+.comment-form input,
+.comment-form textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 11px 12px;
+  color: var(--ink);
+  background: #fffdf7;
+  font: inherit;
+  font-size: 1rem;
+}
+
+.comment-form textarea {
+  resize: vertical;
+}
+
+.comment-form input:focus,
+.comment-form textarea:focus {
+  border-color: var(--gold);
+  outline: 3px solid rgba(174, 135, 68, 0.18);
+}
+
+.comment-form button {
+  min-height: 46px;
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 18px;
+  color: #fffdf7;
+  background: #594c37;
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.comment-form button:hover,
+.comment-form button:focus-visible {
+  background: var(--gold);
+  outline: none;
+}
+
+.form-honey {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+}
+
+.comments-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.comment-item {
+  border: 1px solid rgba(216, 199, 163, 0.8);
+  border-radius: 8px;
+  padding: 14px;
+  background: rgba(255, 253, 247, 0.72);
+}
+
+.comment-item__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  color: #7b5d2c;
+  font-size: 0.92rem;
+  font-weight: 900;
+}
+
+.comment-item p {
+  margin: 10px 0 0;
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.75;
+  white-space: pre-wrap;
 }
 
 .modal__close {
@@ -516,6 +680,11 @@ h1 {
 
   .course {
     min-height: 172px;
+  }
+
+  .form-grid,
+  .form-grid--submit {
+    grid-template-columns: 1fr;
   }
 
   .content-page {

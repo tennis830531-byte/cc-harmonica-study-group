@@ -108,11 +108,51 @@
 
       <div class="modal" data-course-modal hidden>
         <div class="modal__backdrop" data-modal-close></div>
-        <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="course-modal-title">
+        <section class="modal__panel modal__panel--course" role="dialog" aria-modal="true" aria-labelledby="course-modal-title">
           <button class="modal__close" type="button" aria-label="關閉課程內容" data-modal-close>×</button>
           <p class="article-kicker">Course Detail</p>
           <h2 id="course-modal-title">課程內容</h2>
-          <p class="course-modal-message">目前活動尚未開始！</p>
+          <div class="video-placeholder" aria-label="課程影片">
+            <p class="video-placeholder__label">YouTube 影片</p>
+            <p class="course-modal-message">目前活動尚未開始！</p>
+          </div>
+
+          <section class="comment-board" aria-labelledby="comment-board-title">
+            <div class="comment-board__header">
+              <h3 id="comment-board-title">互動留言板</h3>
+              <p>留下你的屆數、名字與心得，留言會顯示給所有人看到。</p>
+            </div>
+
+            <form class="comment-form" data-comment-form>
+              <div class="form-grid">
+                <label>
+                  <span>屆數</span>
+                  <input name="generation" type="text" autocomplete="organization-title" maxlength="16" required />
+                </label>
+                <label>
+                  <span>名字</span>
+                  <input name="name" type="text" autocomplete="name" maxlength="24" required />
+                </label>
+              </div>
+              <label>
+                <span>留言</span>
+                <textarea name="message" rows="4" maxlength="500" required></textarea>
+              </label>
+              <div class="form-grid form-grid--submit">
+                <label>
+                  <span>驗證碼：7 + 5 = ?</span>
+                  <input name="captcha" type="text" inputmode="numeric" autocomplete="off" maxlength="4" required />
+                </label>
+                <input class="form-honey" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+                <button type="submit">送出留言</button>
+              </div>
+              <p class="form-status" data-comment-status role="status" aria-live="polite"></p>
+            </form>
+
+            <div class="comments-list" data-comments-list>
+              <p class="comments-empty">留言載入中...</p>
+            </div>
+          </section>
         </section>
       </div>
     </main>

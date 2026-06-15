@@ -42,7 +42,9 @@ main {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
-  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(174, 135, 68, 0.42);
+  padding: 0 0 12px;
+  margin-bottom: 12px;
 }
 
 .top-nav a,
@@ -126,7 +128,7 @@ main {
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(300px, 440px);
-  align-items: center;
+  align-items: start;
   gap: 26px;
   padding: 18px 0 28px;
 }
@@ -196,7 +198,7 @@ h1 {
 }
 
 .hero__image {
-  margin: 0;
+  margin: 68px 0 0;
   justify-self: end;
 }
 
@@ -204,7 +206,7 @@ h1 {
   display: block;
   width: auto;
   max-width: 100%;
-  max-height: min(68vh, 560px);
+  max-height: min(52vh, 420px);
   object-fit: contain;
   border-radius: 8px;
   box-shadow: var(--shadow);
@@ -470,7 +472,7 @@ h1 {
   .top-nav {
     grid-template-columns: 1fr;
     gap: 10px;
-    padding-bottom: 18px;
+    padding-bottom: 12px;
   }
 
   .top-nav a {
@@ -491,6 +493,7 @@ h1 {
 
   .hero__image {
     order: -1;
+    margin-top: 0;
   }
 
   .brand-heading {

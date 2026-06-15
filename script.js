@@ -53,6 +53,11 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function formatGeneration(value) {
+  const text = String(value ?? "").trim();
+  return text.endsWith("屆") ? text : `${text}屆`;
+}
+
 function renderComments(comments) {
   if (!commentsList) return;
 
@@ -88,7 +93,7 @@ function renderComments(comments) {
         <article class="comment-item">
           <div class="comment-item__meta">
             <span>${index + 1}樓</span>
-            <span>${escapeHtml(comment.generation)}</span>
+            <span>${escapeHtml(formatGeneration(comment.generation))}</span>
             <span>${escapeHtml(comment.name)}</span>
             <time datetime="${escapeHtml(comment.createdAt)}">${escapeHtml(formatDateTime(comment.createdAt))}</time>
           </div>

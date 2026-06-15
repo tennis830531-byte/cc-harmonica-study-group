@@ -29,6 +29,11 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function formatGeneration(value) {
+  const text = String(value ?? "").trim();
+  return text.endsWith("屆") ? text : `${text}屆`;
+}
+
 async function adminFetch(options = {}) {
   const response = await fetch("/api/admin/comments", {
     ...options,
@@ -80,7 +85,7 @@ function renderLessons(lessons) {
                 <article class="admin-comment">
                   <div class="admin-comment__meta">
                     <span>${index + 1}樓</span>
-                    <span>${escapeHtml(comment.generation)}</span>
+                    <span>${escapeHtml(formatGeneration(comment.generation))}</span>
                     <span>${escapeHtml(comment.name)}</span>
                     <time datetime="${escapeHtml(comment.createdAt)}">${escapeHtml(formatDateTime(comment.createdAt))}</time>
                   </div>

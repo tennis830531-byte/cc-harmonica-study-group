@@ -73,6 +73,16 @@ function renderLessons(lessons) {
                               <time datetime="${escapeHtml(reply.createdAt)}">${escapeHtml(formatDateTime(reply.createdAt))}</time>
                             </div>
                             <p>${escapeHtml(reply.message)}</p>
+                            <button
+                              class="admin-reply-delete"
+                              type="button"
+                              data-delete-reply
+                              data-lesson="${escapeHtml(lesson.id)}"
+                              data-id="${escapeHtml(comment.id)}"
+                              data-reply-id="${escapeHtml(reply.id)}"
+                            >
+                              刪除回覆
+                            </button>
                           </article>
                         `,
                       )
@@ -139,24 +149,33 @@ loginForm?.addEventListener("submit", async (event) => {
 });
 
 commentsEl?.addEventListener("click", async (event) => {
-  const button = event.target.closest("[data-delete-comment]");
+  const replyButton = event.target.closest("[data-delete-reply]");
+  const commentButton = event.target.closest("[data-delete-comment]");
+  const button = replyButton || commentButton;
   if (!button) return;
 
   const lesson = button.dataset.lesson ?? "";
   const id = button.dataset.id ?? "";
-  const confirmed = window.confirm("確定要刪除這則留言嗎？");
+  const replyId = button.dataset.replyId ?? "";
+  const isReply = Boolean(replyButton);
+  const confirmed = window.confirm(isReply ? "確定要刪除這則回覆嗎？" : "確定要刪除這則留言嗎？");
   if (!confirmed) return;
 
   button.disabled = true;
-  setStatus("正在刪除留言...");
+  setStatus(isReply ? "正在刪除回覆..." : "正在刪除留言...");
 
   try {
     const data = await adminFetch({
       method: "DELETE",
-      body: JSON.stringify({ lesson, id }),
+      body: JSON.stringify({
+        lesson,
+        id,
+        kind: isReply ? "reply" : "comment",
+        replyId,
+      }),
     });
     renderLessons(Array.isArray(data.lessons) ? data.lessons : []);
-    setStatus("留言已刪除。", "success");
+    setStatus(isReply ? "回覆已刪除。" : "留言已刪除。", "success");
   } catch (error) {
     button.disabled = false;
     setStatus(error.message || "刪除失敗，請稍後再試。", "error");

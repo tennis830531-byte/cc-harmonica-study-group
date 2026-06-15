@@ -602,6 +602,23 @@ h1 {
   white-space: pre-wrap;
 }
 
+.comment-reply .admin-reply-delete {
+  min-height: 34px;
+  margin-top: 10px;
+  border: 1px solid rgba(154, 76, 63, 0.35);
+  border-radius: 8px;
+  padding: 7px 12px;
+  color: var(--red);
+  background: rgba(255, 253, 247, 0.74);
+  font-size: 0.92rem;
+}
+
+.comment-reply .admin-reply-delete:hover,
+.comment-reply .admin-reply-delete:focus-visible {
+  color: #fffdf7;
+  background: var(--red);
+}
+
 .modal__close {
   position: absolute;
   top: 14px;

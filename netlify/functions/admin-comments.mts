@@ -144,12 +144,43 @@ export default async (request: Request, _context: Context) => {
   const body = await request.json().catch(() => null);
   const lesson = cleanText(body?.lesson, 16);
   const id = cleanText(body?.id, 80);
+  const kind = cleanText(body?.kind, 16) || "comment";
+  const replyId = cleanText(body?.replyId, 80);
 
   if (!LESSON_IDS.has(lesson) || !id) {
-    return jsonResponse({ message: "找不到這則留言。" }, { status: 400 });
+    return jsonResponse({ message: kind === "reply" ? "找不到這則回覆。" : "找不到這則留言。" }, { status: 400 });
   }
 
   const comments = await getComments(lesson);
+
+  if (kind === "reply") {
+    if (!replyId) {
+      return jsonResponse({ message: "找不到這則回覆。" }, { status: 400 });
+    }
+
+    let foundReply = false;
+    const nextComments = comments.map((comment) => {
+      if (comment.id !== id) return comment;
+
+      const replies = Array.isArray(comment.replies) ? comment.replies : [];
+      const nextReplies = replies.filter((reply) => reply.id !== replyId);
+      foundReply = nextReplies.length !== replies.length;
+      return {
+        ...comment,
+        replies: nextReplies,
+      };
+    });
+
+    if (!foundReply) {
+      return jsonResponse({ message: "找不到這則回覆。" }, { status: 404 });
+    }
+
+    const store = getCommentStore();
+    await store.setJSON(`${lesson}.json`, nextComments);
+
+    return jsonResponse({ lessons: await getAllComments() });
+  }
+
   const nextComments = comments.filter((comment) => comment.id !== id);
 
   if (nextComments.length === comments.length) {

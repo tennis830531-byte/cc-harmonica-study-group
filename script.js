@@ -8,6 +8,8 @@ const captchaCode = document.querySelector("[data-captcha-code]");
 const captchaToken = document.querySelector("[data-captcha-token]");
 const captchaRefresh = document.querySelector("[data-captcha-refresh]");
 const calendarButtons = document.querySelectorAll(".calendar-button");
+const visitorBadge = document.querySelector("[data-visitor-badge]");
+const visitorCount = document.querySelector("[data-visitor-count]");
 const openButton = document.querySelector("[data-modal-open]");
 const closeButtons = document.querySelectorAll("[data-modal-close]");
 const courseCards = document.querySelectorAll("[data-course-open]");
@@ -220,3 +222,35 @@ document.addEventListener("keydown", (event) => {
     closeAllModals();
   }
 });
+
+function getVisitorId() {
+  const storageKey = "cc-visitor-id";
+  const savedId = window.localStorage.getItem(storageKey);
+  if (savedId) return savedId;
+
+  const nextId = window.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
+  window.localStorage.setItem(storageKey, nextId);
+  return nextId;
+}
+
+async function updateVisitorCount() {
+  if (!visitorBadge || !visitorCount) return;
+
+  try {
+    const response = await fetch("/api/visits", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: getVisitorId() }),
+    });
+    if (!response.ok) throw new Error("visits unavailable");
+
+    const data = await response.json();
+    const count = Number(data.count);
+    visitorCount.textContent = Number.isFinite(count) && count > 0 ? String(count) : "1";
+    visitorBadge.hidden = false;
+  } catch {
+    // The counter is enabled on Netlify deploys.
+  }
+}
+
+updateVisitorCount();

@@ -37,6 +37,42 @@ main {
   padding: 24px 0 44px;
 }
 
+.visitor-badge {
+  position: fixed;
+  top: 0;
+  right: 18px;
+  z-index: 30;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(216, 199, 163, 0.9);
+  border-radius: 0 0 999px 999px;
+  padding: 8px 18px;
+  color: #594c37;
+  background: rgba(255, 253, 247, 0.92);
+  box-shadow: 0 12px 28px rgba(69, 53, 28, 0.12);
+  font-weight: 900;
+  backdrop-filter: blur(10px);
+}
+
+.visitor-badge[hidden] {
+  display: none;
+}
+
+.visitor-badge__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 5px rgba(84, 121, 100, 0.14);
+}
+
+.visitor-badge__count {
+  color: var(--gold);
+  font-size: 1.1rem;
+}
+
 .top-nav {
   width: min(100%, 560px);
   display: grid;
@@ -125,6 +161,23 @@ main {
   outline-offset: 3px;
 }
 
+.announcement-video {
+  width: min(50%, 280px);
+  margin-top: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: rgba(36, 32, 27, 0.08);
+}
+
+.announcement-video iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(360px, 460px);
@@ -137,6 +190,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  align-self: stretch;
 }
 
 .brand-heading {
@@ -929,6 +983,17 @@ h1 {
   .announcement-button {
     width: 100%;
     text-align: center;
+  }
+
+  .announcement-video {
+    width: min(100%, 320px);
+    margin-top: 12px;
+  }
+
+  .visitor-badge {
+    right: 10px;
+    padding: 7px 14px;
+    font-size: 0.9rem;
   }
 
   .hero {

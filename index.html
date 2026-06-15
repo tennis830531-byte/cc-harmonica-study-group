@@ -11,6 +11,12 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="visitor-badge" data-visitor-badge hidden aria-live="polite">
+      <span class="visitor-badge__dot" aria-hidden="true"></span>
+      <span class="visitor-badge__label">累積到站觀看</span>
+      <span class="visitor-badge__count" data-visitor-count>—</span>
+      <span class="visitor-badge__unit">人</span>
+    </div>
     <main>
       <section class="hero" aria-labelledby="site-title">
         <div class="hero__content">
@@ -31,8 +37,18 @@
             <span>歡迎插堂參與！</span>
           </div>
           <button class="announcement-button" type="button" data-modal-open>
-            最新公告!2026年首辦口琴共學團內容通知！
+            👉 最新公告!2026年首辦口琴共學團內容通知！
           </button>
+          <div class="announcement-video">
+            <iframe
+              src="https://www.youtube.com/embed/Jrz1byYPWx4?list=PLffjudCedxZsFkPMkE1jIXAKp6spXKLdt"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
         </div>
         <figure class="hero__image">
           <img src="assets/recruitment.jpg" alt="C.C.口琴樂團招募中海報" />
@@ -45,10 +61,10 @@
           <span class="course__title">【奠定基石】基礎三要素</span>
           <span class="course__detail">呼吸、嘴形、持琴 ＆ 口琴選擇指南</span>
           <span class="course__date">日期：7/18（六）14:00</span>
-          <span class="course__date">地點：待確認！</span>
+          <span class="course__date">地點：逢甲口琴社社辦(育樂館2F 213B)</span>
           <a
             class="calendar-button"
-            href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=C.C.%E6%A8%82%E5%9C%98%E5%8D%8A%E9%9F%B3%E9%9A%8E%E5%8F%A3%E7%90%B4%E5%85%B1%E5%AD%B8%E5%9C%98+%E7%AC%AC1%E5%A0%82%E3%80%90%E5%A5%A0%E5%AE%9A%E5%9F%BA%E7%9F%B3%E3%80%91%E5%9F%BA%E7%A4%8E%E4%B8%89%E8%A6%81%E7%B4%A0&amp;dates=20260718T140000%2F20260718T160000&amp;ctz=Asia%2FTaipei&amp;details=%E5%91%BC%E5%90%B8%E3%80%81%E5%98%B4%E5%BD%A2%E3%80%81%E6%8C%81%E7%90%B4+%EF%BC%86+%E5%8F%A3%E7%90%B4%E9%81%B8%E6%93%87%E6%8C%87%E5%8D%97&amp;location=%E5%BE%85%E7%A2%BA%E8%AA%8D"
+            href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=C.C.%E6%A8%82%E5%9C%98%E5%8D%8A%E9%9F%B3%E9%9A%8E%E5%8F%A3%E7%90%B4%E5%85%B1%E5%AD%B8%E5%9C%98+%E7%AC%AC1%E5%A0%82%E3%80%90%E5%A5%A0%E5%AE%9A%E5%9F%BA%E7%9F%B3%E3%80%91%E5%9F%BA%E7%A4%8E%E4%B8%89%E8%A6%81%E7%B4%A0&amp;dates=20260718T140000%2F20260718T160000&amp;ctz=Asia%2FTaipei&amp;details=%E5%91%BC%E5%90%B8%E3%80%81%E5%98%B4%E5%BD%A2%E3%80%81%E6%8C%81%E7%90%B4+%EF%BC%86+%E5%8F%A3%E7%90%B4%E9%81%B8%E6%93%87%E6%8C%87%E5%8D%97&amp;location=%E9%80%A2%E7%94%B2%E5%8F%A3%E7%90%B4%E7%A4%BE%E7%A4%BE%E8%BE%A6%28%E8%82%B2%E6%A8%82%E9%A4%A82F+213B%29"
             target="_blank"
             rel="noopener"
             aria-label="將第 1 堂加入 Google 行事曆"

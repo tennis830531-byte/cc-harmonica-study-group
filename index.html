@@ -40,7 +40,7 @@
       </section>
 
       <section class="course-grid" aria-label="六大課程主題">
-        <a class="course course--foundation" href="#lesson-1" id="lesson-1">
+        <a class="course course--foundation" href="#lesson-1" id="lesson-1" data-course-open>
           <span class="course__number">第 1 堂</span>
           <span class="course__title">【奠定基石】基礎三要素</span>
           <span class="course__detail">呼吸、嘴形、持琴 ＆ 口琴選擇指南</span>
@@ -48,7 +48,7 @@
           <span class="course__date">地點：待確認！</span>
         </a>
 
-        <a class="course course--scale" href="#lesson-2" id="lesson-2">
+        <a class="course course--scale" href="#lesson-2" id="lesson-2" data-course-open>
           <span class="course__number">第 2 堂</span>
           <span class="course__title">【穿梭黑白鍵】按鍵與音階流暢度</span>
           <span class="course__detail">口琴日常保養與維護</span>
@@ -56,7 +56,7 @@
           <span class="course__date">地點：待確認！</span>
         </a>
 
-        <a class="course course--rhythm" href="#lesson-3" id="lesson-3">
+        <a class="course course--rhythm" href="#lesson-3" id="lesson-3" data-course-open>
           <span class="course__number">第 3 堂</span>
           <span class="course__title">【節奏大師】複雜節奏技巧掌握</span>
           <span class="course__detail">把拍點、切分與律動吹穩</span>
@@ -64,7 +64,7 @@
           <span class="course__date">地點：待確認！</span>
         </a>
 
-        <a class="course course--tone" href="#lesson-4" id="lesson-4">
+        <a class="course course--tone" href="#lesson-4" id="lesson-4" data-course-open>
           <span class="course__number">第 4 堂</span>
           <span class="course__title">【情感調色盤】圓滑奏與音量控制</span>
           <span class="course__detail">讓旋律有線條、有呼吸</span>
@@ -72,7 +72,7 @@
           <span class="course__date">地點：待確認！</span>
         </a>
 
-        <a class="course course--style" href="#lesson-5" id="lesson-5">
+        <a class="course course--style" href="#lesson-5" id="lesson-5" data-course-open>
           <span class="course__number">第 5 堂</span>
           <span class="course__title">【風格解鎖】裝飾奏、振音與個人特色</span>
           <span class="course__detail">找到自己的聲音與表情</span>
@@ -80,7 +80,7 @@
           <span class="course__date">地點：待確認！</span>
         </a>
 
-        <a class="course course--ensemble" href="#lesson-6" id="lesson-6">
+        <a class="course course--ensemble" href="#lesson-6" id="lesson-6" data-course-open>
           <span class="course__number">第 6 堂</span>
           <span class="course__title">【合奏派對】音樂融合與默契培養</span>
           <span class="course__detail">一起聽、一起接、一起完成音樂</span>
@@ -103,6 +103,16 @@
           <p>
             內容會盡量深入淺出，不管你是剛開始學，還是已經吹了一段時間，都希望大家能在這次共學中帶走一些實用的觀念與收穫。
           </p>
+        </section>
+      </div>
+
+      <div class="modal" data-course-modal hidden>
+        <div class="modal__backdrop" data-modal-close></div>
+        <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="course-modal-title">
+          <button class="modal__close" type="button" aria-label="關閉課程內容" data-modal-close>×</button>
+          <p class="article-kicker">Course Detail</p>
+          <h2 id="course-modal-title">課程內容</h2>
+          <p class="course-modal-message">目前活動尚未開始！</p>
         </section>
       </div>
     </main>

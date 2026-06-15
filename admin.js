@@ -1,5 +1,6 @@
 const loginForm = document.querySelector("[data-admin-login]");
 const statusEl = document.querySelector("[data-admin-status]");
+const settingsEl = document.querySelector("[data-admin-settings]");
 const commentsEl = document.querySelector("[data-admin-comments]");
 let adminPassword = sessionStorage.getItem("ccAdminPassword") ?? "";
 
@@ -35,12 +36,13 @@ function formatGeneration(value) {
 }
 
 async function adminFetch(options = {}) {
-  const response = await fetch("/api/admin/comments", {
-    ...options,
+  const { endpoint = "/api/admin/comments", ...fetchOptions } = options;
+  const response = await fetch(endpoint, {
+    ...fetchOptions,
     headers: {
       "Content-Type": "application/json",
       "x-admin-password": adminPassword,
-      ...(options.headers ?? {}),
+      ...(fetchOptions.headers ?? {}),
     },
   });
   const data = await response.json().catch(() => ({}));
@@ -50,6 +52,68 @@ async function adminFetch(options = {}) {
   }
 
   return data;
+}
+
+async function adminSettingsFetch(options = {}) {
+  return adminFetch({
+    ...options,
+    endpoint: "/api/admin/course-settings",
+  });
+}
+
+function renderSettings(settings) {
+  if (!settingsEl) return;
+
+  const lessons = Array.isArray(settings?.lessons) ? settings.lessons : [];
+  settingsEl.hidden = false;
+  settingsEl.innerHTML = `
+    <form class="admin-settings-form" data-admin-settings-form>
+      <div class="admin-settings__header">
+        <div>
+          <p class="article-kicker">Course Settings</p>
+          <h2>課程設定</h2>
+        </div>
+        <button type="submit">儲存課程設定</button>
+      </div>
+      <label class="admin-settings__wide">
+        <span>首頁第一堂開課標籤</span>
+        <input name="heroDateLabel" type="text" maxlength="80" value="${escapeHtml(settings?.heroDateLabel ?? "")}" />
+      </label>
+      <div class="admin-settings-lessons">
+        ${lessons
+          .map(
+            (lesson, index) => `
+              <section class="admin-setting-card" data-setting-lesson="${escapeHtml(lesson.id)}">
+                <h3>第 ${index + 1} 堂</h3>
+                <div class="admin-setting-grid">
+                  <label>
+                    <span>日期</span>
+                    <input name="date" type="text" maxlength="40" value="${escapeHtml(lesson.date ?? "")}" />
+                  </label>
+                  <label>
+                    <span>地點</span>
+                    <input name="location" type="text" maxlength="80" value="${escapeHtml(lesson.location ?? "")}" />
+                  </label>
+                  <label>
+                    <span>YouTube 影片連結</span>
+                    <input name="videoUrl" type="url" maxlength="300" value="${escapeHtml(lesson.videoUrl ?? "")}" placeholder="https://www.youtube.com/watch?v=..." />
+                  </label>
+                  <label>
+                    <span>行事曆開始時間</span>
+                    <input name="calendarStart" type="datetime-local" value="${escapeHtml(lesson.calendarStart ?? "")}" />
+                  </label>
+                  <label>
+                    <span>行事曆結束時間</span>
+                    <input name="calendarEnd" type="datetime-local" value="${escapeHtml(lesson.calendarEnd ?? "")}" />
+                  </label>
+                </div>
+              </section>
+            `,
+          )
+          .join("")}
+      </div>
+    </form>
+  `;
 }
 
 function renderLessons(lessons) {
@@ -134,6 +198,22 @@ async function loadAdminComments() {
   setStatus("已載入留言。", "success");
 }
 
+async function loadAdminSettings() {
+  const data = await adminSettingsFetch();
+  renderSettings(data.settings);
+}
+
+async function loadAdmin() {
+  setStatus("後台資料讀取中...");
+  const [settingsData, commentsData] = await Promise.all([
+    adminSettingsFetch(),
+    adminFetch(),
+  ]);
+  renderSettings(settingsData.settings);
+  renderLessons(Array.isArray(commentsData.lessons) ? commentsData.lessons : []);
+  setStatus("已載入後台資料。", "success");
+}
+
 loginForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
   const formData = new FormData(loginForm);
@@ -141,10 +221,46 @@ loginForm?.addEventListener("submit", async (event) => {
   sessionStorage.setItem("ccAdminPassword", adminPassword);
 
   try {
-    await loadAdminComments();
+    await loadAdmin();
   } catch (error) {
     setStatus(error.message || "管理密碼不正確。", "error");
     sessionStorage.removeItem("ccAdminPassword");
+  }
+});
+
+settingsEl?.addEventListener("submit", async (event) => {
+  const form = event.target.closest("[data-admin-settings-form]");
+  if (!form) return;
+  event.preventDefault();
+
+  const lessons = Array.from(form.querySelectorAll("[data-setting-lesson]")).map((section) => ({
+    id: section.dataset.settingLesson ?? "",
+    date: section.querySelector('[name="date"]')?.value.trim() ?? "",
+    location: section.querySelector('[name="location"]')?.value.trim() ?? "",
+    videoUrl: section.querySelector('[name="videoUrl"]')?.value.trim() ?? "",
+    calendarStart: section.querySelector('[name="calendarStart"]')?.value.trim() ?? "",
+    calendarEnd: section.querySelector('[name="calendarEnd"]')?.value.trim() ?? "",
+  }));
+
+  const settings = {
+    heroDateLabel: form.elements.heroDateLabel.value.trim(),
+    lessons,
+  };
+
+  const button = form.querySelector('button[type="submit"]');
+  button.disabled = true;
+  setStatus("正在儲存課程設定...");
+
+  try {
+    const data = await adminSettingsFetch({
+      method: "POST",
+      body: JSON.stringify({ settings }),
+    });
+    renderSettings(data.settings);
+    setStatus("課程設定已儲存。", "success");
+  } catch (error) {
+    button.disabled = false;
+    setStatus(error.message || "課程設定儲存失敗。", "error");
   }
 });
 
@@ -215,7 +331,7 @@ commentsEl?.addEventListener("submit", async (event) => {
 });
 
 if (adminPassword) {
-  loadAdminComments().catch(() => {
+  loadAdmin().catch(() => {
     sessionStorage.removeItem("ccAdminPassword");
   });
 }

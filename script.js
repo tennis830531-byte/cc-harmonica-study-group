@@ -1,6 +1,7 @@
 const announcementModal = document.querySelector("[data-modal]");
 const courseModal = document.querySelector("[data-course-modal]");
 const courseModalTitle = document.querySelector("#course-modal-title");
+const courseVideo = document.querySelector("[data-course-video]");
 const commentForm = document.querySelector("[data-comment-form]");
 const commentStatus = document.querySelector("[data-comment-status]");
 const commentsList = document.querySelector("[data-comments-list]");
@@ -13,7 +14,9 @@ const visitorCount = document.querySelector("[data-visitor-count]");
 const openButton = document.querySelector("[data-modal-open]");
 const closeButtons = document.querySelectorAll("[data-modal-close]");
 const courseCards = document.querySelectorAll("[data-course-open]");
+const heroDateLabel = document.querySelector("[data-hero-date-label]");
 let activeLesson = "lesson-1";
+let courseSettings = new Map();
 
 function setCommentStatus(message, tone = "neutral") {
   if (!commentStatus) return;
@@ -34,6 +37,90 @@ function closeAllModals() {
 }
 
 openButton?.addEventListener("click", () => openModal(announcementModal));
+
+function toYouTubeEmbedUrl(value) {
+  const text = String(value ?? "").trim();
+  if (!text) return "";
+
+  try {
+    const url = new URL(text);
+    if (url.hostname.includes("youtu.be")) {
+      const id = url.pathname.replace("/", "");
+      return id ? `https://www.youtube.com/embed/${encodeURIComponent(id)}` : "";
+    }
+
+    if (url.hostname.includes("youtube.com")) {
+      if (url.pathname.startsWith("/embed/")) return url.toString();
+      const id = url.searchParams.get("v");
+      return id ? `https://www.youtube.com/embed/${encodeURIComponent(id)}` : "";
+    }
+  } catch {
+    return "";
+  }
+
+  return "";
+}
+
+function renderCourseVideo(lessonId) {
+  if (!courseVideo) return;
+
+  const videoUrl = courseSettings.get(lessonId)?.videoUrl ?? "";
+  const embedUrl = toYouTubeEmbedUrl(videoUrl);
+
+  if (!embedUrl) {
+    courseVideo.className = "video-placeholder";
+    courseVideo.innerHTML = `
+      <p class="video-placeholder__label">YouTube 影片</p>
+      <p class="course-modal-message">目前活動尚未開始！</p>
+    `;
+    return;
+  }
+
+  courseVideo.className = "course-video";
+  courseVideo.innerHTML = `
+    <iframe
+      src="${escapeHtml(embedUrl)}"
+      title="課程 YouTube 影片"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen
+    ></iframe>
+  `;
+}
+
+function applyCourseSettings(settings) {
+  if (heroDateLabel && settings?.heroDateLabel) {
+    heroDateLabel.textContent = settings.heroDateLabel;
+  }
+
+  courseSettings = new Map(
+    Array.isArray(settings?.lessons) ? settings.lessons.map((lesson) => [lesson.id, lesson]) : [],
+  );
+
+  courseCards.forEach((card) => {
+    const setting = courseSettings.get(card.id);
+    if (!setting) return;
+
+    const dateEl = card.querySelector("[data-course-date]");
+    const locationEl = card.querySelector("[data-course-location]");
+    const calendarEl = card.querySelector(".calendar-button");
+
+    if (dateEl) dateEl.textContent = `日期：${setting.date || "待確認！"}`;
+    if (locationEl) locationEl.textContent = `地點：${setting.location || "待確認！"}`;
+    if (calendarEl) calendarEl.href = `/api/calendar?lesson=${encodeURIComponent(card.id)}`;
+  });
+}
+
+async function loadCourseSettings() {
+  try {
+    const response = await fetch("/api/course-settings");
+    if (!response.ok) throw new Error("settings unavailable");
+    const data = await response.json();
+    applyCourseSettings(data.settings);
+  } catch {
+    // Static file previews keep their built-in course text.
+  }
+}
 
 function formatDateTime(value) {
   try {
@@ -147,6 +234,7 @@ courseCards.forEach((card) => {
     const title = card.querySelector(".course__title")?.textContent.trim() ?? "";
     activeLesson = card.id;
     courseModalTitle.textContent = `${number} ${title}`;
+    renderCourseVideo(activeLesson);
     commentForm?.reset();
     openModal(courseModal);
     loadComments(activeLesson);
@@ -254,3 +342,4 @@ async function updateVisitorCount() {
 }
 
 updateVisitorCount();
+loadCourseSettings();

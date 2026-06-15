@@ -477,6 +477,22 @@ h1 {
   text-align: center;
 }
 
+.course-video {
+  margin-top: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: rgba(36, 32, 27, 0.08);
+}
+
+.course-video iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 .video-placeholder__label {
   margin: 0;
   color: var(--gold);
@@ -881,6 +897,97 @@ h1 {
   margin-top: 24px;
 }
 
+.admin-settings {
+  margin-top: 26px;
+  border-top: 1px solid rgba(216, 199, 163, 0.8);
+  padding-top: 22px;
+}
+
+.admin-settings-form {
+  display: grid;
+  gap: 18px;
+}
+
+.admin-settings__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-settings__header h2 {
+  margin: 0;
+  font-size: clamp(1.45rem, 3vw, 2rem);
+}
+
+.admin-settings-form label {
+  display: grid;
+  gap: 7px;
+  color: #594c37;
+  font-weight: 900;
+}
+
+.admin-settings-form input {
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--ink);
+  background: #fffdf7;
+  font: inherit;
+}
+
+.admin-settings-form input:focus {
+  border-color: var(--gold);
+  outline: 3px solid rgba(174, 135, 68, 0.18);
+}
+
+.admin-settings-form button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: #fffdf7;
+  background: #594c37;
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.admin-settings-form button:hover,
+.admin-settings-form button:focus-visible {
+  background: var(--gold);
+  outline: none;
+}
+
+.admin-settings-lessons {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-setting-card {
+  border: 1px solid rgba(216, 199, 163, 0.82);
+  border-radius: 8px;
+  padding: 16px;
+  background: rgba(255, 253, 247, 0.72);
+}
+
+.admin-setting-card h3 {
+  margin: 0 0 12px;
+  color: #7b5d2c;
+}
+
+.admin-setting-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.admin-setting-grid label:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
 .admin-lesson {
   border-top: 1px solid rgba(216, 199, 163, 0.8);
   padding-top: 18px;
@@ -1027,8 +1134,13 @@ h1 {
   }
 
   .form-grid,
-  .form-grid--submit {
+  .form-grid--submit,
+  .admin-setting-grid {
     grid-template-columns: 1fr;
+  }
+
+  .admin-setting-grid label:nth-child(3) {
+    grid-column: auto;
   }
 
   .admin-login,

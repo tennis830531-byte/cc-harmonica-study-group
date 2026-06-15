@@ -8,6 +8,14 @@ type CommentRecord = {
   name: string;
   message: string;
   createdAt: string;
+  replies?: ReplyRecord[];
+};
+
+type ReplyRecord = {
+  id: string;
+  author: "CC小精靈";
+  message: string;
+  createdAt: string;
 };
 
 const LESSON_IDS = new Set(["lesson-1", "lesson-2", "lesson-3", "lesson-4", "lesson-5", "lesson-6"]);

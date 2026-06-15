@@ -62,18 +62,41 @@ function renderComments(comments) {
   }
 
   commentsList.innerHTML = comments
-    .map(
-      (comment) => `
+    .map((comment, index) => {
+      const replies = Array.isArray(comment.replies) ? comment.replies : [];
+      const repliesHtml = replies.length
+        ? `
+          <div class="comment-replies">
+            ${replies
+              .map(
+                (reply) => `
+                  <article class="comment-reply">
+                    <div class="comment-reply__meta">
+                      <span>${escapeHtml(reply.author ?? "CC小精靈")}</span>
+                      <time datetime="${escapeHtml(reply.createdAt)}">${escapeHtml(formatDateTime(reply.createdAt))}</time>
+                    </div>
+                    <p>${escapeHtml(reply.message)}</p>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+        `
+        : "";
+
+      return `
         <article class="comment-item">
           <div class="comment-item__meta">
+            <span>${index + 1}樓</span>
             <span>${escapeHtml(comment.generation)}</span>
             <span>${escapeHtml(comment.name)}</span>
             <time datetime="${escapeHtml(comment.createdAt)}">${escapeHtml(formatDateTime(comment.createdAt))}</time>
           </div>
           <p>${escapeHtml(comment.message)}</p>
+          ${repliesHtml}
         </article>
-      `,
-    )
+      `;
+    })
     .join("");
 }
 

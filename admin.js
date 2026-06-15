@@ -54,21 +54,51 @@ function renderLessons(lessons) {
       const comments = Array.isArray(lesson.comments) ? lesson.comments : [];
       const body = comments.length
         ? comments
-            .map(
-              (comment) => `
+            .map((comment, index) => {
+              const replies = Array.isArray(comment.replies) ? comment.replies : [];
+              const repliesHtml = replies.length
+                ? `
+                  <div class="admin-replies">
+                    ${replies
+                      .map(
+                        (reply) => `
+                          <article class="comment-reply">
+                            <div class="comment-reply__meta">
+                              <span>${escapeHtml(reply.author ?? "CC小精靈")}</span>
+                              <time datetime="${escapeHtml(reply.createdAt)}">${escapeHtml(formatDateTime(reply.createdAt))}</time>
+                            </div>
+                            <p>${escapeHtml(reply.message)}</p>
+                          </article>
+                        `,
+                      )
+                      .join("")}
+                  </div>
+                `
+                : "";
+
+              return `
                 <article class="admin-comment">
                   <div class="admin-comment__meta">
+                    <span>${index + 1}樓</span>
                     <span>${escapeHtml(comment.generation)}</span>
                     <span>${escapeHtml(comment.name)}</span>
                     <time datetime="${escapeHtml(comment.createdAt)}">${escapeHtml(formatDateTime(comment.createdAt))}</time>
                   </div>
                   <p>${escapeHtml(comment.message)}</p>
-                  <button type="button" data-delete-comment data-lesson="${escapeHtml(lesson.id)}" data-id="${escapeHtml(comment.id)}">
-                    刪除
+                  ${repliesHtml}
+                  <form class="admin-reply-form" data-reply-comment data-lesson="${escapeHtml(lesson.id)}" data-id="${escapeHtml(comment.id)}">
+                    <label>
+                      <span>CC小精靈回覆</span>
+                      <textarea name="message" rows="2" maxlength="500" required></textarea>
+                    </label>
+                    <button type="submit">送出回覆</button>
+                  </form>
+                  <button class="admin-delete-button" type="button" data-delete-comment data-lesson="${escapeHtml(lesson.id)}" data-id="${escapeHtml(comment.id)}">
+                    刪除留言
                   </button>
                 </article>
-              `,
-            )
+              `;
+            })
             .join("")
         : '<p class="comments-empty">目前沒有留言。</p>';
 
@@ -125,6 +155,38 @@ commentsEl?.addEventListener("click", async (event) => {
   } catch (error) {
     button.disabled = false;
     setStatus(error.message || "刪除失敗，請稍後再試。", "error");
+  }
+});
+
+commentsEl?.addEventListener("submit", async (event) => {
+  const form = event.target.closest("[data-reply-comment]");
+  if (!form) return;
+  event.preventDefault();
+
+  const formData = new FormData(form);
+  const lesson = form.dataset.lesson ?? "";
+  const id = form.dataset.id ?? "";
+  const message = String(formData.get("message") ?? "").trim();
+
+  if (!message) {
+    setStatus("請輸入回覆內容。", "error");
+    return;
+  }
+
+  const button = form.querySelector("button");
+  button.disabled = true;
+  setStatus("正在送出回覆...");
+
+  try {
+    const data = await adminFetch({
+      method: "POST",
+      body: JSON.stringify({ lesson, id, message }),
+    });
+    renderLessons(Array.isArray(data.lessons) ? data.lessons : []);
+    setStatus("回覆已送出。", "success");
+  } catch (error) {
+    button.disabled = false;
+    setStatus(error.message || "回覆失敗，請稍後再試。", "error");
   }
 });
 

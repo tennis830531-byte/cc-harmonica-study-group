@@ -8,6 +8,14 @@ type CommentRecord = {
   name: string;
   message: string;
   createdAt: string;
+  replies?: ReplyRecord[];
+};
+
+type ReplyRecord = {
+  id: string;
+  author: "CC小精靈";
+  message: string;
+  createdAt: string;
 };
 
 const STORE_NAME = "course-comments";
@@ -85,6 +93,47 @@ export default async (request: Request, _context: Context) => {
   }
 
   if (request.method === "GET") {
+    return jsonResponse({ lessons: await getAllComments() });
+  }
+
+  if (request.method === "POST") {
+    const body = await request.json().catch(() => null);
+    const lesson = cleanText(body?.lesson, 16);
+    const id = cleanText(body?.id, 80);
+    const message = cleanText(body?.message, 500);
+
+    if (!LESSON_IDS.has(lesson) || !id || !message) {
+      return jsonResponse({ message: "請輸入回覆內容。" }, { status: 400 });
+    }
+
+    const comments = await getComments(lesson);
+    let found = false;
+    const nextComments = comments.map((comment) => {
+      if (comment.id !== id) return comment;
+
+      found = true;
+      const replies = Array.isArray(comment.replies) ? comment.replies : [];
+      return {
+        ...comment,
+        replies: [
+          ...replies,
+          {
+            id: crypto.randomUUID(),
+            author: "CC小精靈" as const,
+            message,
+            createdAt: new Date().toISOString(),
+          },
+        ],
+      };
+    });
+
+    if (!found) {
+      return jsonResponse({ message: "找不到這則留言。" }, { status: 404 });
+    }
+
+    const store = getCommentStore();
+    await store.setJSON(`${lesson}.json`, nextComments);
+
     return jsonResponse({ lessons: await getAllComments() });
   }
 

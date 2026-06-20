@@ -1,5 +1,6 @@
 const announcementModal = document.querySelector("[data-modal]");
 const courseModal = document.querySelector("[data-course-modal]");
+const infoModal = document.querySelector("[data-info-modal]");
 const courseModalTitle = document.querySelector("#course-modal-title");
 const courseVideo = document.querySelector("[data-course-video]");
 const commentForm = document.querySelector("[data-comment-form]");
@@ -12,6 +13,8 @@ const calendarButtons = document.querySelectorAll(".calendar-button");
 const visitorBadge = document.querySelector("[data-visitor-badge]");
 const visitorCount = document.querySelector("[data-visitor-count]");
 const openButton = document.querySelector("[data-modal-open]");
+const infoButtons = document.querySelectorAll("[data-info-open]");
+const infoPanels = document.querySelectorAll("[data-info-panel]");
 const closeButtons = document.querySelectorAll("[data-modal-close]");
 const courseCards = document.querySelectorAll("[data-course-open]");
 const heroDateLabel = document.querySelector("[data-hero-date-label]");
@@ -37,6 +40,16 @@ function closeAllModals() {
 }
 
 openButton?.addEventListener("click", () => openModal(announcementModal));
+
+infoButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const target = button.dataset.infoOpen;
+    infoPanels.forEach((panel) => {
+      panel.hidden = panel.dataset.infoPanel !== target;
+    });
+    openModal(infoModal);
+  });
+});
 
 function toYouTubeEmbedUrl(value) {
   const text = String(value ?? "").trim();

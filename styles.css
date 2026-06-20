@@ -84,6 +84,7 @@ main {
 }
 
 .top-nav a,
+.top-nav button,
 .back-link {
   min-height: 44px;
   display: inline-flex;
@@ -95,6 +96,7 @@ main {
   padding: 9px 12px;
   color: #594c37;
   background: rgba(255, 253, 247, 0.72);
+  font: inherit;
   font-size: clamp(0.92rem, 1.45vw, 1.04rem);
   font-weight: 800;
   text-decoration: none;
@@ -104,14 +106,17 @@ main {
     transform 180ms ease;
 }
 
-.top-nav a {
+.top-nav a,
+.top-nav button {
   border-color: rgba(89, 76, 55, 0.2);
   color: #fffdf7;
   background: #594c37;
   box-shadow: 0 10px 24px rgba(69, 53, 28, 0.14);
+  cursor: pointer;
 }
 
-.top-nav a::after {
+.top-nav a::after,
+.top-nav button::after {
   content: ">";
   font-family: Arial, "PingFang TC", sans-serif;
   font-size: 0.9em;
@@ -120,6 +125,8 @@ main {
 
 .top-nav a:hover,
 .top-nav a:focus-visible,
+.top-nav button:hover,
+.top-nav button:focus-visible,
 .back-link:hover,
 .back-link:focus-visible {
   border-color: var(--gold);
@@ -436,10 +443,18 @@ h1 {
   width: min(820px, 100%);
 }
 
+.modal__panel--info {
+  width: min(900px, 100%);
+}
+
 .modal__panel h2 {
   margin: 0;
   font-size: clamp(1.8rem, 4.2vw, 3rem);
   line-height: 1.25;
+}
+
+.info-panel[hidden] {
+  display: none;
 }
 
 .announcement-time {

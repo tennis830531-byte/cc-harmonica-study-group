@@ -21,9 +21,9 @@
       <section class="hero" aria-labelledby="site-title">
         <div class="hero__content">
           <nav class="top-nav" aria-label="網站導覽">
-            <a href="origin.html" target="_blank" rel="noopener">C.C.樂團由來</a>
-            <a href="study-group.html" target="_blank" rel="noopener">口琴共學團</a>
-            <a href="ensemble.html" target="_blank" rel="noopener">社友大會合奏團</a>
+            <button type="button" data-info-open="origin">C.C.樂團由來</button>
+            <button type="button" data-info-open="study">口琴共學團</button>
+            <button type="button" data-info-open="ensemble">社友大會合奏團</button>
           </nav>
           <p class="eyebrow">C.C. HARMONICA ENSEMBLE</p>
           <div class="brand-heading">
@@ -181,6 +181,72 @@
               <p class="form-status" data-comment-status role="status" aria-live="polite"></p>
             </form>
           </section>
+        </section>
+      </div>
+
+      <div class="modal" data-info-modal hidden>
+        <div class="modal__backdrop" data-modal-close></div>
+        <section class="modal__panel modal__panel--info" role="dialog" aria-modal="true" aria-label="介紹內容">
+          <button class="modal__close" type="button" aria-label="關閉介紹內容" data-modal-close>×</button>
+
+          <article class="info-panel" data-info-panel="origin">
+            <div class="article-header">
+              <img src="assets/cc-mark.png" alt="吳常熙 FGU 手繪標誌" />
+              <div>
+                <p class="article-kicker">C.C. HARMONICA ENSEMBLE</p>
+                <h2>C.C.樂團由來</h2>
+              </div>
+            </div>
+            <p>
+              C.C.樂團由逢甲口琴社畢業社友組成，名稱取自已故指導老師吳常熙老師。逢甲口琴社傳承至今已來到第
+              61 屆，擁有逾一甲子的口琴推廣歷史。
+            </p>
+            <p>
+              C.C.樂團以「為了歡樂而吹口琴」為初衷，延續老師推廣口琴的精神，將口琴音樂分享給周遭，讓更多人認識口琴、喜歡口琴。
+            </p>
+            <figure class="article-photo">
+              <img src="assets/cc-origin-photo.jpg" alt="吳常熙老師與口琴社活動照片" />
+            </figure>
+          </article>
+
+          <article class="info-panel" data-info-panel="study" hidden>
+            <div class="article-header">
+              <img src="assets/cc-mark.png" alt="吳常熙 FGU 手繪標誌" />
+              <div>
+                <p class="article-kicker">HARMONICA STUDY GROUP</p>
+                <h2>口琴共學團</h2>
+              </div>
+            </div>
+            <p>
+              從零開始學半音階口琴！從呼吸、嘴形、持琴等基礎，到樂曲演奏與個人特色培養，幫你打穩根基。
+            </p>
+            <p>會後還有重奏合奏自由練琴時間，讓大家邊學邊玩、一起進步！</p>
+            <figure class="article-photo">
+              <img src="assets/study-group-photo.jpg" alt="口琴共學團戶外合奏照片" />
+            </figure>
+          </article>
+
+          <article class="info-panel" data-info-panel="ensemble" hidden>
+            <div class="article-header">
+              <img src="assets/cc-mark.png" alt="吳常熙 FGU 手繪標誌" />
+              <div>
+                <p class="article-kicker">ALUMNI GATHERING ENSEMBLE</p>
+                <h2>社友大會合奏團</h2>
+              </div>
+            </div>
+            <p>
+              <strong>專為時間有限、偏遠外縣市的社友設計！</strong>大會前來場輕鬆簡單的合奏體驗，就能直接開心上台，輕鬆享受舞台樂趣。
+            </p>
+            <figure class="article-photo">
+              <img src="assets/ensemble-photo-new.png" alt="社友大會合奏團舞台合奏照片" />
+            </figure>
+            <figure class="article-photo">
+              <img src="assets/ensemble-photo.jpg" alt="社友大會合奏團演出照片" />
+            </figure>
+            <figure class="article-photo">
+              <img src="assets/ensemble-photo-2.jpg" alt="社友大會合奏團合奏表演照片" />
+            </figure>
+          </article>
         </section>
       </div>
     </main>

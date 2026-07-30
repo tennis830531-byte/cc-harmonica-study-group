@@ -9,7 +9,6 @@ const commentsList = document.querySelector("[data-comments-list]");
 const captchaCode = document.querySelector("[data-captcha-code]");
 const captchaToken = document.querySelector("[data-captcha-token]");
 const captchaRefresh = document.querySelector("[data-captcha-refresh]");
-const calendarButtons = document.querySelectorAll(".calendar-button");
 const visitorBadge = document.querySelector("[data-visitor-badge]");
 const visitorCount = document.querySelector("[data-visitor-count]");
 const openButton = document.querySelector("[data-modal-open]");
@@ -116,12 +115,33 @@ function applyCourseSettings(settings) {
 
     const dateEl = card.querySelector("[data-course-date]");
     const locationEl = card.querySelector("[data-course-location]");
-    const calendarEl = card.querySelector(".calendar-button");
 
     if (dateEl) dateEl.textContent = `日期：${setting.date || "待確認！"}`;
     if (locationEl) locationEl.textContent = `地點：${setting.location || "待確認！"}`;
-    if (calendarEl) calendarEl.href = `/api/calendar?lesson=${encodeURIComponent(card.id)}`;
+    syncCalendarButton(card, setting);
   });
+}
+
+function syncCalendarButton(card, setting) {
+  let calendarEl = card.querySelector(".calendar-button");
+  const hasCalendarTime = Boolean(setting.calendarStart?.trim() && setting.calendarEnd?.trim());
+
+  if (!hasCalendarTime) {
+    calendarEl?.remove();
+    return;
+  }
+
+  if (!calendarEl) {
+    calendarEl = document.createElement("a");
+    calendarEl.className = "calendar-button";
+    calendarEl.rel = "noopener";
+    card.append(calendarEl);
+  }
+
+  const lessonNumber = card.querySelector(".course__number")?.textContent.trim() ?? "這堂課";
+  calendarEl.href = `/api/calendar?lesson=${encodeURIComponent(card.id)}`;
+  calendarEl.textContent = "加入行事曆提醒";
+  calendarEl.setAttribute("aria-label", `將${lessonNumber}加入行事曆提醒`);
 }
 
 async function loadCourseSettings() {
@@ -261,14 +281,16 @@ courseCards.forEach((card) => {
   });
 });
 
-calendarButtons.forEach((button) => {
-  button.addEventListener("click", (event) => {
+document.addEventListener("click", (event) => {
+  if (event.target instanceof Element && event.target.closest(".calendar-button")) {
     event.stopPropagation();
-  });
+  }
+});
 
-  button.addEventListener("keydown", (event) => {
+document.addEventListener("keydown", (event) => {
+  if (event.target instanceof Element && event.target.closest(".calendar-button")) {
     event.stopPropagation();
-  });
+  }
 });
 
 captchaRefresh?.addEventListener("click", () => {

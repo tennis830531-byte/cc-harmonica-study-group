@@ -1177,9 +1177,23 @@ h1 {
   }
 
   .announcement-tools {
-    width: min(100%, 320px);
+    width: 100%;
+    max-width: 420px;
     flex-direction: column;
-    margin-top: 12px;
+    margin-top: 14px;
+  }
+
+  .app-download-button__label {
+    inset: auto 8px 8px;
+    padding: 7px 9px;
+  }
+
+  .app-download-button strong {
+    font-size: 1rem;
+  }
+
+  .app-download-button span {
+    font-size: 0.74rem;
   }
 
   .visitor-badge {
@@ -1196,7 +1210,7 @@ h1 {
   }
 
   .hero__image {
-    order: -1;
+    order: 2;
     margin-top: 0;
   }
 

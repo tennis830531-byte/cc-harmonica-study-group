@@ -142,6 +142,16 @@ function syncCalendarButton(card, setting) {
   calendarEl.href = `/api/calendar?lesson=${encodeURIComponent(card.id)}`;
   calendarEl.textContent = "加入行事曆提醒";
   calendarEl.setAttribute("aria-label", `將${lessonNumber}加入行事曆提醒`);
+
+  if (!calendarEl.dataset.calendarBound) {
+    calendarEl.addEventListener("click", (event) => {
+      event.stopPropagation();
+    });
+    calendarEl.addEventListener("keydown", (event) => {
+      event.stopPropagation();
+    });
+    calendarEl.dataset.calendarBound = "true";
+  }
 }
 
 async function loadCourseSettings() {

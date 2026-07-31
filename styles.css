@@ -288,8 +288,8 @@ h1 {
   min-height: 220px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 14px;
+  justify-content: flex-start;
+  gap: 10px;
   position: relative;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -357,13 +357,11 @@ h1 {
 
 .course--foundation {
   --accent: var(--gold);
-  padding-bottom: 78px;
 }
 
 .calendar-button {
-  position: absolute;
-  right: 18px;
-  bottom: 18px;
+  align-self: flex-end;
+  margin-top: auto;
   min-height: 42px;
   display: inline-flex;
   align-items: center;

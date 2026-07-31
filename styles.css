@@ -1183,6 +1183,12 @@ h1 {
     margin-top: 14px;
   }
 
+  .announcement-video,
+  .app-download-button {
+    flex: none;
+    width: 100%;
+  }
+
   .app-download-button__label {
     inset: auto 8px 8px;
     padding: 7px 9px;
